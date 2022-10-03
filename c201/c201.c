@@ -73,7 +73,12 @@ void List_Error() {
  * @param list Ukazatel na strukturu jednosměrně vázaného seznamu
  */
 void List_Init( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list){
+		return;
+	}
+	list->activeElement = NULL;
+	list->firstElement = NULL;
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -84,7 +89,18 @@ void List_Init( List *list ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  **/
 void List_Dispose( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	list->activeElement = NULL;
+
+	if(!list->firstElement) {
+		return;
+	}
+	
+	for(ListElementPtr temp; list->firstElement != NULL; list->firstElement = temp){
+		temp = list->firstElement->nextElement;
+		free(list->firstElement);
+	}
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -96,7 +112,16 @@ void List_Dispose( List *list ) {
  * @param data Hodnota k vložení na začátek seznamu
  */
 void List_InsertFirst( List *list, int data ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	ListElementPtr temp = malloc(sizeof(struct ListElement));
+	if(!temp){
+		List_Error();
+		return;
+	}
+	temp->nextElement = list->firstElement;
+	list->firstElement = temp;
+	temp->data = data;
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -106,7 +131,9 @@ void List_InsertFirst( List *list, int data ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 void List_First( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	list->activeElement = list->firstElement;
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -117,7 +144,13 @@ void List_First( List *list ) {
  * @param dataPtr Ukazatel na cílovou proměnnou
  */
 void List_GetFirst( List *list, int *dataPtr ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->firstElement){
+		List_Error();
+		return;
+	}
+	*dataPtr = list->firstElement->data;
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -128,7 +161,18 @@ void List_GetFirst( List *list, int *dataPtr ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 void List_DeleteFirst( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->firstElement){
+		return;
+	}
+	
+	ListElementPtr temp = list->firstElement;
+	if(temp == list->activeElement){
+		list->activeElement = NULL;
+	}
+	list->firstElement = list->firstElement->nextElement;
+	free(temp);
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -139,7 +183,14 @@ void List_DeleteFirst( List *list ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 void List_DeleteAfter( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement || !list->activeElement->nextElement){
+		return;
+	}
+	ListElementPtr temp = list->activeElement->nextElement;
+	list->activeElement->nextElement = list->activeElement->nextElement->nextElement;
+	free(temp);
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -152,7 +203,18 @@ void List_DeleteAfter( List *list ) {
  * @param data Hodnota k vložení do seznamu za právě aktivní prvek
  */
 void List_InsertAfter( List *list, int data ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement){
+		return;
+	}
+	ListElementPtr temp = malloc(sizeof(struct ListElement));
+	if(!temp){
+		List_Error();
+	}
+	temp->data = data;
+	temp->nextElement = list->activeElement->nextElement;
+	list->activeElement->nextElement = temp;
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -163,7 +225,13 @@ void List_InsertAfter( List *list, int data ) {
  * @param dataPtr Ukazatel na cílovou proměnnou
  */
 void List_GetValue( List *list, int *dataPtr ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement){
+		List_Error();
+		return;
+	}
+	*dataPtr = list->activeElement->data;
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -174,7 +242,12 @@ void List_GetValue( List *list, int *dataPtr ) {
  * @param data Nová hodnota právě aktivního prvku
  */
 void List_SetValue( List *list, int data ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement){
+		return;
+	}
+	list->activeElement->data = data;
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -185,7 +258,12 @@ void List_SetValue( List *list, int data ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 void List_Next( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement){
+		return;
+	}
+	list->activeElement = list->activeElement->nextElement;
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -195,8 +273,9 @@ void List_Next( List *list ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 int List_IsActive( List *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
-	return 0;
+	return(list->activeElement);
+
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /* Konec c201.c */
