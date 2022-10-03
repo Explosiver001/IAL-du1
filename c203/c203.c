@@ -94,7 +94,13 @@ void Queue_Error( int error_code ) {
  * @param stack Ukazatel na strukturu fronty
  */
 void Queue_Init( Queue *queue ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	queue->firstIndex = 0;
+	queue->freeIndex = 0;
+	for(int i = 0; i<MAX_QUEUE; i++){
+		queue->array[i] = '*';
+	}
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -105,8 +111,10 @@ void Queue_Init( Queue *queue ) {
  * @param index Aktuální index
  */
 int nextIndex( int index ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
-	return 0;
+	return (index+1)%MAX_QUEUE;
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	//return 0;
 }
 
 /**
@@ -116,8 +124,9 @@ int nextIndex( int index ) {
  * @param queue Ukazatel na inicializovanou strukturu fronty
  */
 int Queue_IsEmpty( const Queue *queue ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
-	return 0;
+	return !(queue->freeIndex-queue->firstIndex);
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	//return 0;
 }
 
 /**
@@ -128,8 +137,9 @@ int Queue_IsEmpty( const Queue *queue ) {
  * @param queue Ukazatel na inicializovanou strukturu fronty
  */
 int Queue_IsFull( const Queue *queue ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
-	return 0;
+	return !(nextIndex(queue->freeIndex)-queue->firstIndex);
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	//return 0;
 }
 
 /**
