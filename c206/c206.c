@@ -351,7 +351,25 @@ void DLL_DeleteAfter( DLList *list ) {
  * @param list Ukazatel na inicializovanou strukturu dvousměrně vázaného seznamu
  */
 void DLL_DeleteBefore( DLList *list ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement || list->activeElement == list->firstElement){
+		return;
+	}
+	
+	DLLElementPtr temp = list->activeElement->previousElement;
+
+	if(!list->activeElement->previousElement->previousElement){
+		list->firstElement = list->activeElement;
+		list->activeElement->previousElement = NULL;
+	}
+	else{
+		list->activeElement->previousElement->previousElement->nextElement = list->activeElement;
+		list->activeElement->previousElement = list->activeElement->previousElement->previousElement;
+	}
+
+	free(temp);
+
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -364,7 +382,30 @@ void DLL_DeleteBefore( DLList *list ) {
  * @param data Hodnota k vložení do seznamu za právě aktivní prvek
  */
 void DLL_InsertAfter( DLList *list, int data ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement){
+		return;
+	}
+
+	DLLElementPtr temp = malloc(sizeof(struct DLLElement));
+	if(!temp){
+		DLL_Error();
+		return;
+	}
+
+	temp->data = data;
+	temp->nextElement = list->activeElement->nextElement;
+	temp->previousElement = list->activeElement;
+	if(list->activeElement->nextElement){
+		list->activeElement->nextElement->previousElement = temp;
+	}
+	else{
+		list->lastElement = temp;
+	}
+	list->activeElement->nextElement = temp;
+
+	
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
@@ -377,7 +418,31 @@ void DLL_InsertAfter( DLList *list, int data ) {
  * @param data Hodnota k vložení do seznamu před právě aktivní prvek
  */
 void DLL_InsertBefore( DLList *list, int data ) {
-	solved = FALSE; /* V případě řešení, smažte tento řádek! */
+	if(!list->activeElement){
+		return;
+	}
+
+	DLLElementPtr temp = malloc(sizeof(struct DLLElement));
+	if(!temp){
+		DLL_Error();
+		return;
+	}
+
+	temp->data = data;
+	temp->nextElement = list->activeElement;
+	temp->previousElement = list->activeElement->previousElement;
+	
+
+	if(list->activeElement != list->firstElement){
+		list->activeElement->previousElement->nextElement = temp;
+		
+	}
+	else{
+		list->firstElement = temp;
+	}
+	list->activeElement->previousElement = temp;
+	
+	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
