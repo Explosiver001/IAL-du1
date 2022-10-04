@@ -96,10 +96,8 @@ void DLL_Init( DLList *list ) {
 void DLL_Dispose( DLList *list ) {
 	list->activeElement = NULL;
 	list->lastElement = NULL;
-	if(!list->firstElement){
-		return;
-	}
-	for(DLLElementPtr temp; !list->firstElement; list->firstElement = temp){
+
+	for(DLLElementPtr temp; list->firstElement; list->firstElement = temp){
 		temp = list->firstElement->nextElement;
 		free(list->firstElement);
 	}

@@ -90,12 +90,8 @@ void List_Init( List *list ) {
  **/
 void List_Dispose( List *list ) {
 	list->activeElement = NULL;
-
-	if(!list->firstElement) {
-		return;
-	}
 	
-	for(ListElementPtr temp; list->firstElement != NULL; list->firstElement = temp){
+	for(ListElementPtr temp; list->firstElement; list->firstElement = temp){
 		temp = list->firstElement->nextElement;
 		free(list->firstElement);
 	}
