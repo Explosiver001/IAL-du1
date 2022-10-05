@@ -14,7 +14,6 @@ TEST(test_get_first_empty, "Získání hodnoty prvního prvku v prázdném sezna
 
 	int test_result;
 	List_GetFirst(test_list, &test_result);
-	printf("%-15s: %d\n", "Returned value", test_result);
 ENDTEST
 
 TEST(test_first_empty, "Aktivace prvního prvku v prázdném seznamu")
