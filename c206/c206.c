@@ -101,7 +101,6 @@ void DLL_Dispose( DLList *list ) {
 		temp = list->firstElement->nextElement;
 		free(list->firstElement);
 	}
-	
 	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
