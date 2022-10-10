@@ -12,7 +12,6 @@ void NAME() {                                                                  \
 
 #define ENDTEST                                                                \
 	printf("\n");                                                              \
-	test_dispose_list(test_list);                                              \
 }
 
 #define FAIL(REASON) printf("[FAILED] %s", REASON)
