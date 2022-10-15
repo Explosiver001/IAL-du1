@@ -91,8 +91,6 @@ void List_Dispose( List *list ) {
 		temp = list->firstElement->nextElement;
 		free(list->firstElement);
 	}
-
-	//solved = FALSE; /* V případě řešení, smažte tento řádek! */
 }
 
 /**
