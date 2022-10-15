@@ -94,6 +94,12 @@ void Queue_Error( int error_code ) {
  * @param stack Ukazatel na strukturu fronty
  */
 void Queue_Init( Queue *queue ) {
+	if(!queue){
+		Queue_Error(QERR_INIT);
+		return;
+	}
+
+
 	queue->firstIndex = 0; //index začátku fronty
 
 	queue->freeIndex = 0; //index prvního volného místa ve frontě
